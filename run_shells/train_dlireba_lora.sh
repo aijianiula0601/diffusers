@@ -14,16 +14,16 @@ cd ../
 #--------------------------------------------------------------------------------
 
 
-BASE_DIR="/mnt/cephfs/hjh/train_record/images/text2image/lora/train_pokemon"
+BASE_DIR="/mnt/cephfs/hjh/train_record/images/text2image/lora/train_dlireba"
 
-MODEL_NAME="runwayml/stable-diffusion-v1-5"
-OUTPUT_DIR="${BASE_DIR}/sddata/finetune/lora/pokemon"
-DATASET_NAME="lambdalabs/pokemon-blip-captions"
+MODEL_NAME="swl-models/chilloutmix-ni"
+OUTPUT_DIR="${BASE_DIR}/sddata/finetune/lora/dlireba"
+DATASET_DIR="/mnt/cephfs/hjh/train_record/images/text2image/cmd_train_lora"
 
 CUDA_VISIBLE_DEVICES=6,7 \
 accelerate launch --mixed_precision="fp16" examples/dreambooth/train_dreambooth_lora.py \
   --pretrained_model_name_or_path=$MODEL_NAME \
-  --dataset_name=$DATASET_NAME \
+  --train_data_dir=$DATASET_DIR \
   --dataloader_num_workers=8 \
   --resolution=512 --center_crop --random_flip \
   --train_batch_size=8 \
@@ -35,5 +35,5 @@ accelerate launch --mixed_precision="fp16" examples/dreambooth/train_dreambooth_
   --output_dir=${OUTPUT_DIR} \
   --report_to=wandb \
   --checkpointing_steps=500 \
-  --validation_prompt="A pokemon with blue eyes." \
+  --validation_prompt="A woman was standing in the street with a clear face." \
   --seed=1337
