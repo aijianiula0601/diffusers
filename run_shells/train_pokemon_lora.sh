@@ -8,19 +8,25 @@ cd "$curdir" || exit
 
 cd ../
 
+
+#--------------------------------------------------------------------------------
+# 参考：https://huggingface.co/blog/lora
+#--------------------------------------------------------------------------------
+
+
 BASE_DIR="/mnt/cephfs/hjh/train_record/images/text2image/lora/train_pokemon"
 
 MODEL_NAME="runwayml/stable-diffusion-v1-5"
 OUTPUT_DIR="${BASE_DIR}/sddata/finetune/lora/pokemon"
 DATASET_NAME="lambdalabs/pokemon-blip-captions"
 
-CUDA_VISIBLE_DEVICES=0,6 \
+CUDA_VISIBLE_DEVICES=6,7 \
 accelerate launch --mixed_precision="fp16" examples/text_to_image/train_text_to_image_lora.py \
   --pretrained_model_name_or_path=$MODEL_NAME \
   --dataset_name=$DATASET_NAME \
   --dataloader_num_workers=8 \
   --resolution=512 --center_crop --random_flip \
-  --train_batch_size=1 \
+  --train_batch_size=8 \
   --gradient_accumulation_steps=4 \
   --max_train_steps=15000 \
   --learning_rate=1e-04 \
